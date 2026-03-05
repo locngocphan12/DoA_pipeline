@@ -1,0 +1,35 @@
+# --- Security ---
+.env
+
+# --- Data & Results ---
+results/
+processed_reviews/
+processed_reviews_human/
+processed_reviews_sea/
+new_extracted_parts_human/
+new_extracted_parts_sea/
+extracted_parts_human/
+extracted_parts_sea/
+
+# --- Grobid & Intermediate data ---
+grobid_bib/
+grobid_fulltext/
+grobid_metadata/
+grobid_tei/
+json/
+txt/
+batch_processing/
+evaluation/
+
+# --- Specific File Extensions ---
+*.jsonl
+*.csv
+*.json
+
+
+# --- Python environment ---
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/

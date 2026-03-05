@@ -1,0 +1,37 @@
+Logic cốt lõi: Một "Critical Flaw" (Lỗi chí mạng) thực sự là lỗi khiến bài báo bị đánh giá kém chất lượng. Chúng ta sẽ list ra các lỗi mà LLM review, Human review và Meta review có đề cập đến (không nhất thiết là cả 3 cùng đề cập, chỉ cần 1 lỗi mà được 1 reviewer nào đó đề cập thì vẫn giữ lại) Sau đó tiến hành đánh điểm cho các lỗi đó, nếu lỗi đó được nhiều reviewer phát hiện thì lỗi đó sẽ được đánh điểm cao, những lỗi nào ít reviewer đánh phát hiện hoặc đề cập thì đánh điểm thấp. Sau khi đã có 1 tập hợp gồm các lỗi và điểm của chúng sẽ tiến hành tính điểm cho các reviewer (LLm, Human, Meta-reviewer). Ví dụ đối với Human review tìm thấy 2 lỗi có số điểm tương ứng là X và Y thì tổng số điểm của người đó sẽ là X+Y.
+
+Quy trình thực hiện (Workflow):
+
+Dữ liệu đầu vào: review của LLM cho paper, review của Meta-data, toàn bộ review của human đối với bài báo đó.
+
+Mục đích của toàn bộ review của human + LLm review + Meta-review là để xây 1 tập họp lỗi được phát hiện đối với paper đó
+
+Bước trích xuất (Extraction): Call API để trích xuất các lỗi được đề cập trong review của human + LLm review + Meta-review và trả về tập lỗi đã được gom nhóm. Ví dụ có thể có nhiều cách diễn đạt khác nhau nhưng suy ra cuối cùng thì vẫn chỉ đề cập đến 1 ý nào đó (ví dụ: lack of baselines). Trả về 1 dict bao gồm {
+
+"1 ý lỗi chung nào đó": [ danh sách của các dictionary chứa các lỗi của các review (LLM, Human, Meta-review)]
+
+}
+
+Ví dụ:
+
+{
+
+"lack of baselines":{"LLM review": [], "Human01": ["the author should run more baseline like method A"], "Human01":[],"Meta_review":[]
+
+}
+
+Bước tính điểm: dựa vào output nhưu trên "{
+
+"lack of baselines":{"LLM review": [], "Human01": ["the author should run more baseline like method A"], "Human01":[],"Meta_review":[]
+
+}"
+
+tính điểm xem "cái ý" (ví dụ "lack of baselines") được bâo nhiêu điểm dựa trên số lượng lần được nhắc đến hoặc đề cập. Bước này trả về 1 dict bao gồm
+
+{
+
+"problem_1": 4,
+
+"problem_2": 8,
+
+}
